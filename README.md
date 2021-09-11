@@ -7,3 +7,8 @@
 npx create-react-app react-django
 `
 
+### Instalar react-router-dom
+
+`
+npm i react-router-dom
+`
