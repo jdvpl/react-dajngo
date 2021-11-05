@@ -6,6 +6,9 @@ export class Sitio extends Component{
 
         this.state={
             sitios:[],
+            proyectos:[],
+            usuarios:[],
+            lenguajes:[],
             modalTitle:[],
             SitioId:0,
             SitioNombre:"",
@@ -15,7 +18,6 @@ export class Sitio extends Component{
             SitioHosting:"",
             SitioDb:"",
             SitioLenguajes:"",
-
         }
     }
 
@@ -24,6 +26,21 @@ export class Sitio extends Component{
         .then(response => response.json())
         .then(data =>{
             this.setState({sitios:data})
+        });
+        fetch(variables.API_URL+'lenguaje')
+        .then(response => response.json())
+        .then(data =>{
+            this.setState({lenguajes:data})
+        });
+        fetch(variables.API_URL+'proyecto')
+        .then(response => response.json())
+        .then(data =>{
+            this.setState({proyectos:data})
+        });
+        fetch(variables.API_URL+'usuario')
+        .then(response => response.json())
+        .then(data =>{
+            this.setState({usuarios:data})
         });
     }
     componentDidMount() {
@@ -101,7 +118,7 @@ export class Sitio extends Component{
             alert(result);
             this.refreshList();
         },(error)=>{
-            alert("Fallo al insertar")
+            alert("Fallo al insertar sitio")
         })
     }
     // crear un nuevo proyecto
@@ -160,18 +177,24 @@ export class Sitio extends Component{
             SitioHosting,
             SitioDb,
             SitioLenguajes,
+            lenguajes,
+proyectos,
+usuarios,
         } = this.state;
         return (
             <div>
-            <button type="button" className="btn btn-dark m-2 float-end"
+            <div className="d-flex flex-row-reverse bd-highlight">
+
+            <button type="button" className="btn btn-dark m-2 float-right"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
             onClick={()=>this.addClick()} >
                 Agregar
             </button>
-                <h3>Pagina de Sitio</h3>
-
-                <table className="table table-striped">
+            </div>
+                <h3 className="text-center">Pagina de Sitio</h3>
+            <div className="table-responsive m-auto">
+                <table className="table table-striped align-middle">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -222,8 +245,8 @@ export class Sitio extends Component{
                         )}
                     </tbody>
                 </table>
-
-                <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+                <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -234,26 +257,39 @@ export class Sitio extends Component{
                             </div>
                             <div className="modal-body">
                                 <div className="mb-3 text-left">
-                                    <label for="message-text" className="col-form-label">Nombre del Sitio:</label>
+                                    <label htmlFor="message-text" className="col-form-label">Nombre del Sitio:</label>
                                     <input type="text" className="form-control" value={SitioNombre} onChange={this.changeSitioNombre}/>
                                     {/* proyecto */}
-                                    <label for="message-text" className="col-form-label">Proyecto:</label>
-                                    <input type="text" className="form-control" value={Proyecto} onChange={this.changeProyecto}/>
+                                    <label htmlFor="message-text" className="col-form-label">Proyecto:</label>
+                                    <select onChange={this.changeProyecto}  value={Proyecto} className="form-select" >
+                                                {proyectos.map(pro=><option key={pro.ProyectotId} value={pro.ProyectoNombre}>
+                                        {pro.ProyectoNombre}
+                                    </option>)}
+                                    </select>
                                     {/* usuario */}
-                                    <label for="message-text" className="col-form-label">Usuario:</label>
-                                    <input type="text" className="form-control" value={Usuario} onChange={this.changeUsuario}/>
+                                    <label htmlFor="message-text" className="col-form-label">Usuario:</label>
+                                    <select onChange={this.changeUsuario}  value={Usuario} className="form-select" >
+                                                {usuarios.map(usu=><option key={usu.UsuarioId} value={usu.UsuarioNombre}>
+                                        {usu.UsuarioNombre}
+                                    </option>)}
+                                    </select>
                                     {/* SitioHosting */}
-                                    <label for="message-text" className="col-form-label">Hosting:</label>
+                                    <label htmlFor="message-text" className="col-form-label">Hosting:</label>
                                     <input type="text" className="form-control" value={SitioHosting} onChange={this.changeSitioHosting}/>
                                     {/* SitioDb */}
-                                    <label for="message-text" className="col-form-label">DB:</label>
+                                    <label htmlFor="message-text" className="col-form-label">DB:</label>
                                     <input type="text" className="form-control" value={SitioDb} onChange={this.changeSitioDb}/>
                                     {/* SitioDb */}
-                                    <label for="message-text" className="col-form-label">Lenguajes:</label>
-                                    <input type="text" className="form-control" value={SitioLenguajes} onChange={this.changeSitioLenguajes}/>
+                                    <label htmlFor="message-text" className="col-form-label">Lenguajes:</label>
+    
+                                    <select onChange={this.changeSitioLenguajes}  value={SitioLenguajes} className="form-select" >
+                                                {lenguajes.map(len=><option key={len.LenguajeId} value={len.LenguajeNombre}>
+                                        {len.LenguajeNombre}
+                                    </option>)}
+                                    </select>
                                     {/* descripcion */}
-                                    <label for="message-text" className="col-form-label">Descripcion del proyecto:</label>
-                                    <textarea class="form-control" id="message-text" value={SitioDescripcion} onChange={this.changeSitioDescripcion}></textarea>
+                                    <label htmlFor="message-text" className="col-form-label">Descripcion del proyecto:</label>
+                                    <textarea className="form-control" id="message-text" value={SitioDescripcion} onChange={this.changeSitioDescripcion}></textarea>
                                 </div>
                                 <div className="d-grid gap-2">
                                 {SitioId===0?

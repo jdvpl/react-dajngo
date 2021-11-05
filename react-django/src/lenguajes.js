@@ -1,64 +1,64 @@
 import React,{Component} from "react";
 import {variables} from './Variables.js';
-export class Proyecto extends Component{
+export class Lenguaje extends Component{
     constructor(props) {
         super(props);
 
         this.state={
-            proyectos:[],
+            lenguajes:[],
             modalTitle:[],
-            ProyectotId:0,
-            ProyectoNombre:"",
-            ProyectoDescripcion:""
+            LenguajeId:0,
+            LenguajeNombre:"",
+            LenguajeDescripcion:""
             
         }
     }
 
     refreshList() {
-        fetch(variables.API_URL+'proyecto')
+        fetch(variables.API_URL+'lenguaje')
         .then(response => response.json())
         .then(data =>{
-            this.setState({proyectos:data})
+            this.setState({lenguajes:data})
         });
     }
     componentDidMount() {
         this.refreshList();
     }
-    changeProyectoNombre=(e)=>{
-        this.setState({ProyectoNombre:e.target.value});
+    changeLenguajeNombre=(e)=>{
+        this.setState({LenguajeNombre:e.target.value});
     }
-    changeProyectoDescripcion=(e)=>{
-        this.setState({ProyectoDescripcion:e.target.value});
+    changeLenguajeDescripcion=(e)=>{
+        this.setState({LenguajeDescripcion:e.target.value});
     }
     // metodo para agregar
     addClick(){
         this.setState({
-            modalTitle:"Agregar proyecto",
-            ProyectotId:0,
-            ProyectoNombre:"",
-            ProyectoDescripcion:""
+            modalTitle:"Agregar lenguaje",
+            LenguajeId:0,
+            LenguajeNombre:"",
+            LenguajeDescripcion:""
         });
     }
     // metodo para editart
-    editClick(pro){
+    editClick(len){
         this.setState({
-            modalTitle:"Editar proyecto",
-            ProyectotId:pro.ProyectotId,
-            ProyectoNombre:pro.ProyectoNombre,
-            ProyectoDescripcion:pro.ProyectoDescripcion,
+            modalTitle:"Editar Lenguaje",
+            LenguajeId:len.LenguajeId,
+            LenguajeNombre:len.LenguajeNombre,
+            LenguajeDescripcion:len.LenguajeDescripcion
         });
     }
     // crear un nuevo proyecto
     createClick(){
-        fetch(variables.API_URL+'proyecto',{
+        fetch(variables.API_URL+'lenguaje',{
             method:'POST',
             headers:{
                 'Accept':'application/json',
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                ProyectoNombre:this.state.ProyectoNombre,
-                ProyectoDescripcion:this.state.ProyectoDescripcion
+                LenguajeNombre:this.state.LenguajeNombre,
+                LenguajeDescripcion:this.state.LenguajeDescripcion
             })
         })
         .then(res => res.json())
@@ -71,16 +71,16 @@ export class Proyecto extends Component{
     }
     // crear un nuevo proyecto
     updateClick(){
-        fetch(variables.API_URL+'proyecto',{
+        fetch(variables.API_URL+'lenguaje',{
             method:'PUT',
             headers:{
                 'Accept':'application/json',
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                ProyectotId:this.state.ProyectotId,
-                ProyectoNombre:this.state.ProyectoNombre,
-                ProyectoDescripcion:this.state.ProyectoDescripcion
+                LenguajeId:this.state.LenguajeId,
+                LenguajeNombre:this.state.LenguajeNombre,
+                LenguajeDescripcion:this.state.LenguajeDescripcion
             })
         })
         .then(res => res.json())
@@ -94,7 +94,7 @@ export class Proyecto extends Component{
     // crear un nuevo proyecto
     deleteClick(id){
         if(window.confirm("Estas seguro de borrarlo")){
-        fetch(variables.API_URL+'proyecto/'+id,{
+        fetch(variables.API_URL+'lenguaje/'+id,{
             method:'DELETE',
             headers:{
                 'Accept':'application/json',
@@ -111,13 +111,14 @@ export class Proyecto extends Component{
     }
     }
     render() {
-        const {proyectos,modalTitle,
-            ProyectotId,
-            ProyectoNombre,
-            ProyectoDescripcion} = this.state;
+        const {lenguajes,
+            modalTitle,
+            LenguajeId,
+            LenguajeNombre,
+            LenguajeDescripcion} = this.state;
         return (
             <div>
-             <div className="d-flex flex-row-reverse bd-highlight">
+           <div className="d-flex flex-row-reverse bd-highlight">
                 <button type="button" className="btn btn-dark m-2 float-right"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
@@ -125,30 +126,30 @@ export class Proyecto extends Component{
                     Agregar
                 </button>
             </div>
-                <h3 className="text-center">Pagina de Proyecto</h3>
-                <div className="table-responsive m-auto">
+                <h3 className="text-center">Pagina de Lenguaje</h3>
+
                 <table className="table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Proyecto</th>
+                            <th>Lenguaje</th>
                             <th>Descripcion</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {proyectos.map(pro=>
-                            <tr key={pro.ProyectotId}>
-                                <td>{pro.ProyectotId}</td>    
-                                <td>{pro.ProyectoNombre}</td>    
-                                <td>{pro.ProyectoDescripcion}</td>
+                        {lenguajes.map(len=>
+                            <tr key={len.LenguajeId}>
+                                <td>{len.LenguajeId}</td>    
+                                <td>{len.LenguajeNombre}</td>    
+                                <td>{len.LenguajeDescripcion}</td>
                                 <td>
                                     <button
                                         type="button"
                                         className="btn btn-dark mx-1"
                                         data-bs-toggle="modal"
                                         data-bs-target="#exampleModal"
-                                        onClick={()=>this.editClick(pro)} >
+                                        onClick={()=>this.editClick(len)} >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                         <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -157,7 +158,7 @@ export class Proyecto extends Component{
                                     <button
                                         type="button"
                                         className="btn btn-dark mx-1"
-                                        onClick={() => this.deleteClick(pro.ProyectotId)}
+                                        onClick={() => this.deleteClick(len.LenguajeId)}
                                         >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
@@ -168,7 +169,7 @@ export class Proyecto extends Component{
                         )}
                     </tbody>
                 </table>
-                </div>
+
                 <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -176,21 +177,21 @@ export class Proyecto extends Component{
                                 <h5 className="modal-title">
                                     {modalTitle}
                                 </h5>
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
                             </div>
                             <div className="modal-body">
                                 <div className="mb-3">
-                                    <label htmlFor="message-text" className="col-form-label">Nombre del proyecto:</label>
-                                    <input type="text" className="form-control" value={ProyectoNombre} onChange={this.changeProyectoNombre}/>
+                                    <label htmlFor="message-text" className="col-form-label">Nombre del lenguaje:</label>
+                                    <input type="text" className="form-control" value={LenguajeNombre} onChange={this.changeLenguajeNombre}/>
                                     <label htmlFor="message-text" className="col-form-label">Descripcion del proyecto:</label>
-                                    <textarea className="form-control" id="message-text" value={ProyectoDescripcion} onChange={this.changeProyectoDescripcion}></textarea>
+                                    <textarea className="form-control" id="message-text" value={LenguajeDescripcion} onChange={this.changeLenguajeDescripcion}></textarea>
                                 </div>
                                 <div className="d-grid gap-2">
-                                {ProyectotId===0?
+                                {LenguajeId===0?
                                 <button type="button" className="btn btn-primary float-start btn-lg" onClick={() => this.createClick()}>Crear</button>
                                 :null
                                 }
-                                {ProyectotId!==0?
+                                {LenguajeId!==0?
                                 <button type="button" className="btn btn-success float-start" onClick={() => this.updateClick()}>Editar</button>
                                 :null
                                 }
